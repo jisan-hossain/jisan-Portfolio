@@ -58,7 +58,7 @@ export function ResumeModal({ isOpen, onClose, onShowToast }: ResumeModalProps) 
           <div className="flex items-center gap-2">
             <FileCheck2 className="w-5 h-5 text-[#3D8178]" />
             <h2 id="resume-title" className="text-sm font-bold text-[#172B3A]">
-              Curriculum Vitae — Md Jisan Hossain
+              Curriculum Vitae — Md Jisan Hossain..
             </h2>
           </div>
 
