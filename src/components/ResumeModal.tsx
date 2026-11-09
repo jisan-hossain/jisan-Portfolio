@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect } from "react";
@@ -6,8 +7,15 @@ import {
   Printer,
   MapPin,
   FileCheck2,
+  Download,
+  GiftIcon,
+  LinkIcon,
+  Globe,
+  Mail,
+  Phone,
 } from "lucide-react";
-import { PERSONAL_INFO, PROJECTS } from "@/data/portfolio-data";
+
+import { PERSONAL_INFO } from "@/data/portfolio-data";
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -15,15 +23,20 @@ interface ResumeModalProps {
   onShowToast: (message: string) => void;
 }
 
-export function ResumeModal({ isOpen, onClose, onShowToast }: ResumeModalProps) {
+export function ResumeModal({
+  isOpen,
+  onClose,
+}: ResumeModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
     }
+
     return () => {
       document.body.style.overflow = "unset";
       window.removeEventListener("keydown", handleKeyDown);
@@ -34,11 +47,6 @@ export function ResumeModal({ isOpen, onClose, onShowToast }: ResumeModalProps) 
 
   const handlePrint = () => {
     window.print();
-  };
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(PERSONAL_INFO.contacts.email);
-    onShowToast("Email copied to clipboard!");
   };
 
   return (
@@ -53,22 +61,34 @@ export function ResumeModal({ isOpen, onClose, onShowToast }: ResumeModalProps) 
         className="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-[#E3E8E5] shadow-2xl flex flex-col relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Top Control Bar (Non-print) */}
+        {/* Top Control Bar */}
         <div className="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-[#E3E8E5] flex items-center justify-between z-20 print:hidden">
           <div className="flex items-center gap-2">
             <FileCheck2 className="w-5 h-5 text-[#3D8178]" />
-            <h2 id="resume-title" className="text-sm font-bold text-[#172B3A]">
-              Curriculum Vitae — Md Jisan Hossain..
+            <h2
+              id="resume-title"
+              className="text-sm font-bold text-[#172B3A]"
+            >
+              Curriculum Vitae — Md Jisan Hossain
             </h2>
           </div>
 
           <div className="flex items-center gap-2">
+            <a
+              href="/resume.pdf"
+              download="Md_Jisan_Hossain_Resume.pdf"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#3D8178] hover:bg-[#326D65] rounded-lg transition-colors"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download PDF
+            </a>
+
             <button
               onClick={handlePrint}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#172B3A] bg-[#F7F8F5] hover:bg-[#EEF2EF] border border-[#E3E8E5] rounded-lg transition-colors cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5 text-[#3D8178]" />
-              <span>Print / PDF</span>
+              Print
             </button>
 
             <button
@@ -81,40 +101,67 @@ export function ResumeModal({ isOpen, onClose, onShowToast }: ResumeModalProps) 
           </div>
         </div>
 
-        {/* Printable Resume Document Body */}
-        <div className="p-6 sm:p-10 text-[#172B3A] space-y-8 print:p-0">
-          
-          {/* Resume Header */}
-          <header className="border-b border-[#E3E8E5] pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+        {/* Resume Document */}
+        <div className="p-6 sm:p-10 text-[#172B3A] space-y-6 print:p-0 print:space-y-4">
+
+          {/* Header */}
+          <header className="border-b border-[#E3E8E5] pb-5">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172B3A]">
-                  Md Jisan Hossain
+                <h1 className="text-3xl font-bold tracking-tight text-[#172B3A]">
+                  MD JISAN HOSSAIN
                 </h1>
+
                 <p className="text-sm font-semibold text-[#3D8178] mt-1">
-                  Aspiring Full-Stack Developer · Fresher
+                  Aspiring Full-Stack Developer | Full-Stack Developer Intern
                 </p>
               </div>
 
-              <div className="text-xs text-[#687780] space-y-1 sm:text-right">
-                <div className="flex sm:justify-end items-center gap-1.5">
+              <div className="text-xs text-[#687780] space-y-2">
+                <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#3D8178]" />
-                  <span>Bangladesh</span>
+                  Dhaka, Bangladesh
                 </div>
-                <div>
-                  <a
-                    href={`mailto:${PERSONAL_INFO.contacts.email}`}
-                    className="hover:text-[#3D8178] font-medium text-[#172B3A]"
-                  >
-                    {PERSONAL_INFO.contacts.email}
-                  </a>
+
+                <div className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 text-[#3D8178]" />
+                  +880 1967 134628
                 </div>
-                <div>
-                  <span className="text-[#687780]">GitHub: </span>
-                  <span className="font-mono text-[11px] text-[#172B3A]">
-                    {PERSONAL_INFO.contacts.githubDisplay}
-                  </span>
+
+                <div className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-[#3D8178]" />
+                  {PERSONAL_INFO.contacts.email}
                 </div>
+
+                <a
+                  href={PERSONAL_INFO.contacts.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#3D8178]"
+                >
+                  <LinkedinIcon className="w-3.5 h-3.5 text-[#3D8178]" />
+                  LinkedIn
+                </a>
+
+                <a
+                  href={PERSONAL_INFO.contacts.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#3D8178]"
+                >
+                  <GithubIcon className="w-3.5 h-3.5 text-[#3D8178]" />
+                  GitHub
+                </a>
+
+                <a
+                  href="https://jisan-portfolio-azure.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#3D8178]"
+                >
+                  <Globe className="w-3.5 h-3.5 text-[#3D8178]" />
+                  Portfolio
+                </a>
               </div>
             </div>
           </header>
@@ -124,108 +171,131 @@ export function ResumeModal({ isOpen, onClose, onShowToast }: ResumeModalProps) 
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#3D8178] mb-2">
               Professional Summary
             </h3>
-            <p className="text-xs sm:text-sm text-[#172B3A] leading-relaxed">
-              Aspiring Full-Stack Developer from Bangladesh with hands-on experience building modern, responsive web applications using Next.js, React, TypeScript, and Tailwind CSS. Actively expanding backend proficiency across Node.js, Express, MongoDB, and modern authentication workflows. Highly motivated fresher with disciplined self-learning habits, eager to contribute to a collaborative software development team and gain real-world engineering experience.
+
+            <p className="text-xs sm:text-sm leading-relaxed">
+              Aspiring Full-Stack Developer from Bangladesh with hands-on
+              experience building responsive web applications using Next.js,
+              React, TypeScript, and Tailwind CSS. Experienced in developing
+              interactive user interfaces and practical projects, including
+              a fitness workout application and a personal portfolio website.
+              Passionate about learning modern web technologies and growing
+              through real-world software development experience.
             </p>
           </section>
 
           {/* Technical Skills */}
           <section>
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#3D8178] mb-3">
-              Technical Repertoire
+              Technical Skills
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              <div className="p-3 rounded-xl bg-[#F7F8F5] border border-[#E3E8E5]">
-                <strong className="block text-[#172B3A] font-semibold mb-1">
-                  Frontend Development
-                </strong>
-                <p className="text-[#687780] leading-relaxed">
-                  HTML5, CSS3, JavaScript (ES6+), TypeScript, React, Next.js (App Router), Tailwind CSS
-                </p>
-              </div>
 
-              <div className="p-3 rounded-xl bg-[#F7F8F5] border border-[#E3E8E5]">
-                <strong className="block text-[#172B3A] font-semibold mb-1">
-                  Backend &amp; Database
-                </strong>
-                <p className="text-[#687780] leading-relaxed">
-                  Node.js, Express.js, MongoDB, RESTful API Design, Better Auth (Session Management)
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-[#F7F8F5] border border-[#E3E8E5]">
-                <strong className="block text-[#172B3A] font-semibold mb-1">
-                  Tools &amp; Workflows
-                </strong>
-                <p className="text-[#687780] leading-relaxed">
-                  Git, GitHub, VS Code, Postman, npm, Responsive Testing, Semantic HTML
-                </p>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs">
+              <p><strong>Languages:</strong> HTML5, CSS3, JavaScript (ES6+), TypeScript</p>
+              <p><strong>Frontend:</strong> React.js, Next.js (App Router)</p>
+              <p><strong>Styling:</strong> Tailwind CSS, DaisyUI</p>
+              <p><strong>Backend:</strong> Basic Knowledge of Node.js, Express.js, REST APIs</p>
+              <p><strong>Database:</strong> Basic Knowledge of MongoDB</p>
+              <p><strong>Tools:</strong> Git, GitHub, VS Code</p>
+              <p><strong>Libraries:</strong> Lucide React</p>
             </div>
           </section>
 
-          {/* Selected Projects */}
-          <section>
-            <h3 className="text-xs font-bold uppercase tracking-widest text-[#3D8178] mb-4">
-              Featured Case Studies &amp; Projects
-            </h3>
-            <div className="space-y-4">
-              {PROJECTS.map((project) => (
-                <div
-                  key={project.id}
-                  className="p-4 rounded-xl border border-[#E3E8E5] bg-white"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
-                    <h4 className="text-sm font-bold text-[#172B3A]">
-                      {project.title} — {project.tagline}
-                    </h4>
-                    <span className="text-[11px] font-mono text-[#3D8178] bg-[#EBF3F1] px-2 py-0.5 rounded">
-                      {project.technologies.join(" · ")}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#687780] leading-relaxed mb-2">
-                    {project.description}
-                  </p>
-                  <ul className="space-y-1">
-                    {project.features.slice(0, 3).map((feat, i) => (
-                      <li key={i} className="text-xs text-[#172B3A] flex items-start gap-2">
-                        <span className="text-[#3D8178]">•</span>
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Career Objectives & Commitment */}
+          {/* Projects */}
           <section>
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#3D8178] mb-3">
-              Career Goals &amp; Values
+              Projects
             </h3>
-            <div className="p-4 rounded-xl bg-[#F7F8F5] border border-[#E3E8E5] text-xs text-[#172B3A] space-y-2">
-              <p>
-                <strong>Goal:</strong> Secure an internship or junior developer role where I can contribute to high-impact user experiences, participate in disciplined code reviews, and scale my backend systems engineering capabilities.
-              </p>
-              <p className="text-[#687780]">
-                <strong>Candidate Promise:</strong> High coachability, genuine transparency regarding my current fresher experience level, rigorous attention to detail, and a commitment to writing clean, maintainable, production-ready code.
-              </p>
+
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-sm font-bold">
+                  FitLog – Dark-Themed Gym Companion Web App
+                </h4>
+
+                <p className="text-xs text-[#687780] mt-1">
+                  <strong>Technologies:</strong> Next.js, TypeScript, Tailwind CSS, DaisyUI
+                </p>
+
+                <ul className="list-disc pl-5 mt-2 space-y-1 text-xs leading-relaxed">
+                  <li>Developed a responsive gym companion application featuring a library of 12 workout exercises.</li>
+                  <li>Displayed muscle groups, equipment, estimated duration, calories, and ratings.</li>
+                  <li>Implemented workout planning and saving functionality with live Plan and Saved counters.</li>
+                  <li>Added tracking features for exercises, workout duration, and estimated calories burned.</li>
+                </ul>
+
+                <a
+                  href="https://fitlog-app-pi.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[#3D8178] font-semibold"
+                >
+                  Live Demo: fitlog-app-pi.vercel.app
+                </a>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-bold">
+                  Personal Developer Portfolio Website
+                </h4>
+
+                <p className="text-xs text-[#687780] mt-1">
+                  <strong>Technologies:</strong> Next.js 16.4.5, React,
+                  TypeScript, Tailwind CSS, Lucide React
+                </p>
+
+                <ul className="list-disc pl-5 mt-2 space-y-1 text-xs leading-relaxed">
+                  <li>Developed a personal portfolio website using Next.js App Router.</li>
+                  <li>Built reusable React components to organize About, Skills, and Projects sections.</li>
+                  <li>Used TypeScript to structure project data.</li>
+                  <li>Created a responsive interface using Tailwind CSS.</li>
+                </ul>
+
+                <a
+                  href="https://jisan-portfolio-azure.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[#3D8178] font-semibold"
+                >
+                  Live Demo: jisan-portfolio-azure.vercel.app
+                </a>
+              </div>
             </div>
           </section>
 
-          {/* Footer of Resume */}
-          <div className="pt-4 border-t border-[#E3E8E5] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#687780]">
-            <div>
-              References, code repositories, and technical walkthroughs gladly provided upon request.
-            </div>
-            <button
-              onClick={handleCopyEmail}
-              className="text-[#3D8178] font-semibold hover:underline print:hidden cursor-pointer"
-            >
-              Copy Candidate Email
-            </button>
-          </div>
+          {/* Work Experience */}
+          <section>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-[#3D8178] mb-3">
+              Work Experience
+            </h3>
+
+            <h4 className="text-sm font-bold">
+              Garments Sewing Operator
+            </h4>
+
+            <p className="text-xs text-[#687780]">
+              Knit Asia Limited | 2025–2026
+            </p>
+
+            <ul className="list-disc pl-5 mt-2 space-y-1 text-xs">
+              <li>Worked in garment production operations.</li>
+              <li>Gained practical experience in a professional manufacturing environment.</li>
+              <li>Developed discipline and teamwork skills.</li>
+            </ul>
+          </section>
+
+          {/* Career Objective */}
+          <section>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-[#3D8178] mb-2">
+              Career Objective
+            </h3>
+
+            <p className="text-xs leading-relaxed">
+              Seeking a Full-Stack Developer Internship to apply my technical
+              skills, gain hands-on industry experience, collaborate with
+              experienced developers, and grow into a professional software
+              developer.
+            </p>
+          </section>
 
         </div>
       </div>
